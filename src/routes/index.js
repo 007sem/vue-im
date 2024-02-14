@@ -5,7 +5,7 @@ history: createWebHashHistory(),
 routes: [
    {
       path: '/',
-      component: () => import('@/pages/Index.vue'),
+      component: () => import('@/pages/Home/index.vue'),
    },
    {
       path: '/login',

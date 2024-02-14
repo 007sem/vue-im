@@ -38,18 +38,21 @@ router.get("/rejest", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { password, username } = req.body;
 
+  
+  const { password, username } = req.body;
   const isFind = await UserModel.findOne({ username });
 
   if (isFind) {
     if (isFind.password === password) {
       const { avatar } = isFind;
+      const token = getToken({
+        username,
+        avatar,
+      })
       res.send({
-        token: getToken({
-          username,
-          avatar,
-        }),
+        token,
+        message: "login success",
       });
     } else {
       res.send({
@@ -65,18 +68,11 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/auth", async (req, res) => {
-  const { token } = req.query;
-  const isAuth = verifyToken(token);
-  if (isAuth) {
-    res.send({
-      data: isAuth,
-      message: "auth is success",
-    });
-  } else {
-    res.send({
-      message: "auth is fail",
-    });
-  }
+  const user = req.user
+  console.log("user", user)
+  res.send({
+    user
+  })
 });
 
 export default router;

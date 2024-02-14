@@ -1,13 +1,16 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import usersRouter from "./api/user.js";
+import { getToken, verifyToken } from "./utils/index.js";
 
 import MessageModel from "./model/message.js";
 
 // import
 
 const app = express();
+const PORT = 3000;
 
 // body解析
 app.use(express.json());
@@ -22,12 +25,28 @@ mongoose
     console.log("数据库连接成功");
   });
 
-// 跨域中间件
+app.use(cors());
+
+// // 响应拦截中间件
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // 允许所有来源的跨域请求
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 允许的 HTTP 方法
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允许的请求头
-  next();
+  // 获取请求头中的 Authorization 字段
+  let token = req.headers.authorization;
+
+  const whitelist = ["/user/login", "/public"];
+
+  if (whitelist.includes(req.path)) {
+    next();
+  } else {
+    token = token.split(" ")[1];
+    const user = verifyToken(token);
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(401).json({ code: 401, msg: "token不合法" });
+    }
+    
+  }
 });
 
 app.use("/user", usersRouter);
@@ -36,6 +55,6 @@ app.all("*", function (req, res, next) {
   res.json("hello");
 });
 
-app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
+app.listen(PORT, () => {
+  console.log("App listening on port " + PORT + "!");
 });
