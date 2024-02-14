@@ -14,9 +14,10 @@ let messageData = {
   messages: [
     {
         "id": "0x",
+        "time": "2023-04-11T09:45:00.000Z",
         "is_other_person_send": true,
         "content_type": "text",
-        "content": "    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab at adipisci, laboriosam eius magni commodi, ipsam assumenda vel mollitia vitae enim! Architecto eaque optio maxime illo ullam expedita tenetur laboriosam.0"
+        "content": " 😀😚😍🤗me illo ullam expedita tenetur laboriosam.0"
     },
     {
         "id": "1x",
@@ -139,8 +140,9 @@ let messageData = {
 <template>
   <div class="message-list">
     <MessageItem
-      v-for="message in messageData.messages"
+      v-for="(message, index) in messageData.messages"
       :key="message.id"
+      :serial="index == 0 ? false : message.is_other_person_send == messageData.messages[index-1].is_other_person_send"
       :person="messageData.other_person"
       :data="message"
     />
