@@ -1,5 +1,7 @@
 import axios from "axios";
 import MyConfig from "@/config";
+import router from "@/routes"; 
+
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.baseURL = MyConfig.BASE_URL;
@@ -16,15 +18,21 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("response",response)
     return response;
 },
   (error) => {
-      console.log("error",error);
+      if (error.response && error.response.status === 401) {
+        console.log("error", router)
+
+        router.push("/login");
+      }
   }
 )
 
