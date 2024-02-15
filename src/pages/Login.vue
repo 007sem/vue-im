@@ -12,6 +12,8 @@ const data = {
 const username = ref("user1");
 const password = ref("123456");
 
+const new_username = ref("user")
+
 const router = useRouter();
 
 //  http.get("/rejest",{
@@ -30,6 +32,15 @@ async function login() {
     router.push("/")
   }
 }
+
+async function register() {
+  const { data } = await http.post("/user/register", {
+    username: new_username.value,
+    password: password.value,
+  });
+  console.log(data)
+}
+
 </script>
 
 <template>
@@ -44,6 +55,14 @@ async function login() {
     </div>
 
     <button @click="login">login</button>
+
+
+    <div class="input">
+      <div class="lable">uname</div>
+      <input type="text" v-model="new_username" />
+    </div>
+
+    <button @click="register">register</button>
   </div>
 </template>
 

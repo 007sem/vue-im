@@ -2,16 +2,20 @@ import mongoose from 'mongoose';
 
 // 定义消息模式
 const messageSchema = new mongoose.Schema({
-  sender_id: {
+  chat_id: {
     type: String,
     required: true
   },
-  recipient_id: {
-    type: String,
+  p1: {
+    type: Object,
+    required: true
+  },
+  p2: {
+    type: Object,
     required: true
   },
   message: {
-    type: String,
+    type: Array,
     required: true
   },
   created_at: {

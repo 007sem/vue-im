@@ -17,7 +17,7 @@ const props = defineProps(["avatar", "username"])
 <style scoped lang="less">
 .user-info {
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
   .name{
     margin-left: 1rem;
   }

@@ -2,49 +2,65 @@
 import { ref } from "vue";
 import { auth } from "@/utils/auth";
 import { useRouter } from "vue-router";
+// @ts-ignore
 import ContactList from "./components/ContactList.vue";
 import UserInfo from "./components/UserInfo.vue";
+// @ts-ignore
 import MessageList from "./components/MessageList.vue";
+// @ts-ignore
 import ToolsBar from "./components/ToolsBar.vue";
 import InputBox from "./components/InputBox.vue";
+import CreateChat from "./components/CreateChat.vue";
 
-
-
+import NewChatPop from "./components/NewChatPop.vue";
 
 const router = useRouter();
 const user = ref("");
 
-auth().then((res) => {
-  if (res) {
-    user.value = res.user;
-    console.log(res);
-  } else {
-    router.push("/login");
-  }
-});
+const NewChatPopShow = ref(false);
 
-// init()
+function getData() {
+  auth().then((res) => {
+    if (res) {
+      user.value = res.user;
+      console.log(user.value.chat_list);
+    } else {
+      router.push("/login");
+    }
+  });
+}
+
+function creatSuccess() {
+  NewChatPopShow.value = false;
+  getData();
+}
+function createChat() {
+  NewChatPopShow.value = !NewChatPopShow.value;
+}
+
+getData();
 </script>
 
 <template>
   <div class="container">
     <div class="index">
-    <div class="menu">
-      <UserInfo :avatar="user.avatar" :username="user.username"/>
-      <ContactList />
-    </div>
-    <div class="charts">
-      <MessageList />
-      <ToolsBar />
-      <InputBox />
+      <div class="menu">
+        <UserInfo :avatar="user.avatar" :username="user.username" />
+        <CreateChat @createChat="createChat" />
+        <NewChatPop @creatSuccess="creatSuccess" v-if="NewChatPopShow" />
+        <ContactList :list="user.chat_list" />
+      </div>
+      <div class="charts">
+        <MessageList />
+        <ToolsBar />
+        <InputBox />
+      </div>
     </div>
   </div>
-  </div>
-  
 </template>
 
 <style scoped lang="less">
-.container{
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,9 +79,8 @@ auth().then((res) => {
     padding: 1rem;
     color: #fff;
     border-right: #222;
-    
   }
-  .charts{
+  .charts {
     flex: 1;
     background-color: #fff;
     display: flex;

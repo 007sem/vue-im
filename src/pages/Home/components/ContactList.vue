@@ -2,17 +2,7 @@
 import { ref } from "vue";
 import Avatar from "@/components/Avatar/index.vue";
 
-let src =
-  "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/974.jpg";
-
-let list = [
-  { src: src, name: "name1", time: "time1" },
-  { src: src, name: "name2", time: "time2", active: true },
-  { src: src, name: "name11", time: "time1" },
-  { src: src, name: "name22", time: "time2" },
-  { src: src, name: "name12", time: "time1" },
-  { src: src, name: "name21", time: "time2" },
-];
+const props = defineProps(["list"])
 </script>
 
 <template>
@@ -20,15 +10,15 @@ let list = [
     <div
       class="contact-item"
       :class="item.active ? 'active' : ''"
-      v-for="item in list"
+      v-for="item in props.list"
       :key="item.name"
     >
-      <Avatar :src="src" size="2.4rem" />
+      <Avatar :src="item.avatar" size="2.4rem" />
       <div class="text">
-        <span>{{ item.name }}</span>
-        <span>last message</span>
+        <div>{{ item.name }}</div>
+        <div>{{ item.last_message.content }} &nbsp;</div>
       </div>
-      <div class="time">time</div>
+      <div class="time">{{ item.last_message.time }}</div>
     </div>
   </div>
 </template>
@@ -55,7 +45,9 @@ let list = [
     flex-direction: column;
 
     color: #fff;
-    span:last-child {
+    div:last-child {
+      padding: 0;
+      margin: 0;
       color: #8b8b8b;
       font-size: 0.8rem;
     }

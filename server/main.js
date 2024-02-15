@@ -5,7 +5,7 @@ import cors from "cors";
 import usersRouter from "./api/user.js";
 import { getToken, verifyToken } from "./utils/index.js";
 
-import MessageModel from "./model/message.js";
+
 
 // import
 

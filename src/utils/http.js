@@ -29,8 +29,6 @@ axiosInstance.interceptors.response.use(
 },
   (error) => {
       if (error.response && error.response.status === 401) {
-        console.log("error", router)
-
         router.push("/login");
       }
   }
