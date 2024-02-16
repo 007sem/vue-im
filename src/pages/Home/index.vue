@@ -16,6 +16,8 @@ import NewChatPop from "./components/NewChatPop.vue";
 
 const router = useRouter();
 const user = ref("");
+const chat_id = ref("");
+const message_list = ref({})
 
 const NewChatPopShow = ref(false);
 
@@ -38,6 +40,15 @@ function createChat() {
   NewChatPopShow.value = !NewChatPopShow.value;
 }
 
+function selectChat(chat) {
+  chat_id.value = chat;
+  getMessageList(chat)
+}
+
+function getMessageList(){
+
+}
+
 getData();
 </script>
 
@@ -48,12 +59,12 @@ getData();
         <UserInfo :avatar="user.avatar" :username="user.username" />
         <CreateChat @createChat="createChat" />
         <NewChatPop @creatSuccess="creatSuccess" v-if="NewChatPopShow" />
-        <ContactList :list="user.chat_list" />
+        <ContactList :list="user.chat_list" @select="selectChat" :active="chat_id" />
       </div>
       <div class="charts">
-        <MessageList />
-        <ToolsBar />
-        <InputBox />
+        <MessageList :chat_id="chat_id"/>
+        <ToolsBar :chat_id="chat_id"/>
+        <InputBox :chat_id="chat_id"/>
       </div>
     </div>
   </div>

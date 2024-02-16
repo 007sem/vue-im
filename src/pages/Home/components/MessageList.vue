@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import MessageItem from "./MessageItem.vue";
 
+const props = defineProps(["chat_id"])
 
+console.log("id change",props.chat_id)
 
 let messageData = {
   charts_id: "1",

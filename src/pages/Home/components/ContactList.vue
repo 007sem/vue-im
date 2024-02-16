@@ -2,16 +2,24 @@
 import { ref } from "vue";
 import Avatar from "@/components/Avatar/index.vue";
 
-const props = defineProps(["list"])
+const props = defineProps(["list", "active"])
+
+const emits = defineEmits(["select"])
+
+function select (item){
+  emits("select", item.chat_id)
+}
+
 </script>
 
 <template>
   <div class="contact-list">
     <div
       class="contact-item"
-      :class="item.active ? 'active' : ''"
+      :class="props.active == item.chat_id ? 'active' : ''"
       v-for="item in props.list"
       :key="item.name"
+      @click="select(item)"
     >
       <Avatar :src="item.avatar" size="2.4rem" />
       <div class="text">
